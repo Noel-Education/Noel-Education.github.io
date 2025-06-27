@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Emotional Life Simulator 情感人生模擬器</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; background-color: #fefefe; padding: 2em; max-width: 800px; margin: auto; }
+    .hidden { display: none; }
+    .choices button { margin: 0.5em 0; padding: 0.5em 1em; font-size: 1em; }
+    #status { margin-top: 1em; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🎲 Emotional Life Simulator<br>情感人生模擬器</h1>
+  <div id="start-screen">
+    <p>Please select your character.<br>請選擇你的角色：</p>
+    <button onclick="startGame('boy')">👦 Boy 男生</button>
+    <button onclick="startGame('girl')">👧 Girl 女生</button>
+  </div>
+  <div id="game-screen" class="hidden">
+    <div id="scenario"></div>
+    <div class="choices"></div>
+    <div id="status"></div>
+  </div>
+  <script>
+    const scenarios = [{"text": "Your partner says 'If you really love me, you’d give me your passwords.'\n你的伴侶說：「如果你真心愛我，就應該給我你的密碼。」", "choices": [{"text": "Share the password.\n分享密碼。", "effect": {"happiness": -1, "stress": 2, "wisdom": -1}, "result": "You feel invaded and lose some privacy.\n你覺得被侵犯了私人空間。"}, {"text": "Refuse and explain privacy is important.\n拒絕，並解釋尊重隱私很重要。", "effect": {"happiness": 1, "stress": -1, "wisdom": 2}, "result": "They get upset but you stand your ground.\n對方有點不開心，但你堅守立場。"}, {"text": "Turn a deaf ear or ignore the issue.\n當作沒聽到，逃避問題。", "effect": {"happiness": -2, "stress": 2, "wisdom": -1}, "result": "Things get worse and cause tension.\n情況惡化，氣氛緊張。"}]}, {"text": "Your partner criticizes your job as useless and wants you to quit.\n你的伴侶批評你的工作沒意義，要你辭職。", "choices": [{"text": "Quit to make them happy.\n辭職，討對方歡心。", "effect": {"happiness": -2, "stress": 3, "wisdom": -1}, "result": "You regret giving up your dreams.\n你後悔放棄了自己的夢想。"}, {"text": "Explain you want a supportive partner.\n表明你需要的是支持你的伴侶。", "effect": {"happiness": 1, "stress": -1, "wisdom": 2}, "result": "They apologize and reconsider.\n對方反思後道歉並改變態度。"}, {"text": "Turn a deaf ear or ignore the issue.\n當作沒聽到，視而不見。", "effect": {"happiness": -2, "stress": 2, "wisdom": -1}, "result": "Things get worse and cause tension.\n情況惡化，氣氛緊張。"}]}, {"text": "You disagree on whether to have children in the future.\n你們對未來是否要孩子有重大分歧。", "choices": [{"text": "Avoid the topic.\n逃避這個話題。", "effect": {"happiness": -1, "stress": 1, "wisdom": 0}, "result": "The issue remains unresolved.\n問題依然懸而未決。"}, {"text": "Have an honest conversation.\n坦誠對話。", "effect": {"happiness": 1, "stress": -1, "wisdom": 1}, "result": "You both understand each other better.\n你們彼此更理解了對方的想法。"}, {"text": "Turn a deaf ear or ignore the issue.\n當作沒聽到，視而不見。", "effect": {"happiness": -2, "stress": 2, "wisdom": -1}, "result": "Things get worse and cause tension.\n情況惡化，氣氛緊張。"}]}, {"text": "You and your partner seem to agree on a simple and honest life. But suddenly, he/she say any major decision about the future must be approved by his/her mother first.\n你與伴侶討論未來，本來得到初步共識，彼此都渴望簡單而真誠的生活，但伴侶突然說涉及未來的重大決定，要徵得其母之同意。", "choices": [{"text": "You’re excited about the shared goals and start planning the future together. \n為共同目標感到高興，開始計劃未來。", "effect": {"happiness": 3, "stress": -1, "wisdom": 1}, "result": "Everything feels hopeful and close, but a hidden uncertainty may become a serious problem later.\n你們感到充滿希望，關係更親密了，但其實未來存在致命的不明朗因素。"}, {"text": "You realize this dependency is a red flag and choose to walk away.\n謝絕媽寶伴侶，果斷分手。", "effect": {"happiness": -2, "stress": 2, "wisdom": 1}, "result": "Things get worse and cause tension.\n情況惡化，氣氛緊張。"}, {"text": "Sensing a potential problem, you talk with your partner and look for a way to work it out together.\n意識到潛在問題，嘗試和伴侶溝通，尋求解決辦法。", "effect": {"happiness": 2, "stress": -1, "wisdom": 2}, "result": "You handle it maturely and feel confident.\n你成熟處理，感覺良好。"}]}, {"text": "Your partner had a bad day and feels very down.\n你的伴侶度過了一個糟糕的日子，情緒低落。", "choices": [{"text": "Offer a hug, listen patiently and give encouragement.\n給對方擁抱、耐心傾聽並給予鼓勵。", "effect": {"happiness": 2, "stress": -1, "wisdom": 1}, "result": "They feel comforted and thankful to have you.\n對方感到溫暖，感激有你在身邊。"}, {"text": "Ignore your partner.\n沒留意伴侶的狀況，不聞不問。", "effect": {"happiness": -2, "stress": 2, "wisdom": -1}, "result": "Things get worse and cause tension.\n情況惡化，氣氛緊張。"}, {"text": "You ignored your partner’s feelings and only focused on yourself.\n沒有認真了解伴侶狀況，自顧自說話。", "effect": {"happiness": -2, "stress": 2, "wisdom": -2}, "result": "Your partner feels unheard and starts to lose trust.\n你的伴侶覺得沒被傾聽，開始失去信任。"}]}, {"text": "You both have different opinions on a minor issue.\n你們對一件小事有不同看法。", "choices": [{"text": "Talk it out calmly and compromise together.\n冷靜討論並一同妥協。", "effect": {"happiness": 1, "stress": -1, "wisdom": 1}, "result": "You solve the problem peacefully and grow closer.\n你們和平解決問題，感情更進一步。"}, {"text": "React impulsively or ignore the issue.\n衝動反應或視而不見。", "effect": {"happiness": -2, "stress": 2, "wisdom": -1}, "result": "Things get worse and cause tension.\n情況惡化，氣氛緊張。"}, {"text": "You put the issue online and try to shame your partner publicly.\n把事情放到網路上公審。", "effect": {"happiness": -2, "stress": 2, "wisdom": -2}, "result": "Posting it online only escalates the conflict and damages trust.\n把事情公開到網上只會讓衝突升級，破壞彼此信任。"}]}, {"text": "You noticed your partner always asks how your day was and really listens.\n你發現伴侶每天都關心你的生活，並真心聆聽。", "choices": [{"text": "Thank them and do the same in return.\n感謝對方，並回報同樣的關心。", "effect": {"happiness": 2, "stress": 0, "wisdom": 1}, "result": "Your mutual care builds a healthy relationship.\n你們互相關心，建立了良好的關係。"}, {"text": "You take your partner’s efforts for granted and make no effort in return.\n把對方的付出視為理作當然，自己不作出相應的付出。", "effect": {"happiness": -2, "stress": 2, "wisdom": -1}, "result": "This imbalance makes your partner feel unappreciated and drained.\n這種不平衡讓你的伴侶感到被忽視和疲憊。"}, {"text": "You appreciate how well your partner treats you, but you’re too embarrassed to say thank you.\n知道伴侶對自己很好，但羞於言謝。", "effect": {"happiness": -1, "stress": -2, "wisdom": -1}, "result": "Even though you're grateful, your silence may make your partner feel unappreciated.\n即使你心懷感激，沉默卻可能讓伴侶感到被忽視。"}]}, {"text": "You and your partner openly discuss money and agree on a shared budget.\n你與伴侶坦誠討論金錢，並共同擬定預算。", "choices": [{"text": "Stick to the plan and review regularly.\n堅持預算並定期檢視。", "effect": {"happiness": 2, "stress": -1, "wisdom": 2}, "result": "You both feel secure and responsible together.\n你們都感到安全並願意共同承擔責任。"}, {"text": "You turn a blind eye to your shared savings plan and keep spending like there’s no tomorrow.\n對於擬定好的儲蓄目標視而不見，繼續花錢如流水。", "effect": {"happiness": -3, "stress": 3, "wisdom": -2}, "result": "This creates tension and financial stress in the relationship.\n這導致關係中的緊張與財務壓力。"}, {"text": "After a family emergency prevents your partner from saving the full amount this month, you discover the gap and blow up instead of showing understanding.\n伴侶家中出現突發事故，今個月不能全額儲蓄，你發現儲蓄金額不符後，堅持不退讓，大發雷霆。", "effect": {"happiness": -3, "stress": 3, "wisdom": -2}, "result": "This reaction damages trust and makes your partner feel unsupported.\n這樣的反應破壞了信任，讓伴侶覺得不被支持。"}]}];
+    let stats = { happiness: 5, stress: 0, wisdom: 0 };
+    let current = 0;
+
+    function startGame(character) {
+      document.getElementById("start-screen").classList.add("hidden");
+      document.getElementById("game-screen").classList.remove("hidden");
+      loadScenario(current);
+    }
+
+    function loadScenario(index) {
+      const scene = scenarios[index];
+      document.getElementById("scenario").innerText = scene.text;
+      const choicesDiv = document.querySelector(".choices");
+      choicesDiv.innerHTML = "";
+      scene.choices.forEach((choice) => {
+        const btn = document.createElement("button");
+        btn.innerText = choice.text;
+        btn.onclick = () => makeChoice(choice);
+        choicesDiv.appendChild(btn);
+      });
+    }
+
+    function makeChoice(choice) {
+      for (let key in choice.effect) {
+        stats[key] += choice.effect[key];
+      }
+      document.querySelector(".choices").innerHTML = "";
+      document.getElementById("scenario").innerText = choice.result;
+      document.getElementById("status").innerText = `❤️ Happiness 幸福值: ${stats.happiness}  |  😖 Stress 壓力值: ${stats.stress}  | 🧠 Wisdom 判斷力: ${stats.wisdom}`;
+      current++;
+      if (current < scenarios.length) {
+        setTimeout(() => loadScenario(current), 2500);
+      } else {
+        setTimeout(() => {
+          document.getElementById("scenario").innerText = "Game Over. Thanks for playing!\n遊戲結束，感謝遊玩！";
+        }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>
+
